@@ -1,0 +1,21 @@
+pipeline{
+    agent any
+    stages{
+        stage('clone'){
+            steps{
+                git branch: 'DEV', url: 'https://github.com/naveenmalga/raviLogin.git'
+            }    
+        }
+        
+        stage('build'){
+            steps{
+                sh 'mvn package'
+            }
+        }
+         stage('deploy'){
+             steps{
+                 deploy adapters: [tomcat9(credentialsId: '53313ec0-649a-4fb8-944e-a5170089a1a6', path: '', url: 'http://3.111.150.243:8080/')], contextPath: 'WAR', war: '**/*.war'
+             }
+         }
+    }   
+}
